@@ -1,154 +1,183 @@
-# Artigas Canta
+# PatriaPaint
 
-A Vite + Babylon.js interactive 3D web app featuring a bust of José Gervasio Artigas. The bust rotates with cursor movement, reacts to face dragging with elastic deformation, and sings Uruguayan patriotic songs with amplitude-based lipsync.
+PatriaPaint es una aplicación web interactiva hecha con Vite y Babylon.js que permite pintar graffiti directamente sobre estatuas 3D desde el navegador.
 
-## Quick start
+El proyecto actualmente funciona en modo local y también incluye un modo colaborativo opcional con Socket.IO, para que varias sesiones del navegador puedan pintar sobre la misma estatua en tiempo real.
+
+## Funcionalidades
+
+* Escena 3D interactiva construida con Babylon.js.
+* Pintura estilo aerosol sobre modelos 3D de estatuas.
+* Modo local: permite pintar en el navegador sin levantar servidor colaborativo.
+* Modo colaborativo: varios usuarios pueden entrar a la misma sala de estatua y ver los graffitis en tiempo real.
+* Estado compartido por estatua.
+* Opción para limpiar los graffitis de cada estatua.
+* Límite de decals en el servidor para evitar crecimiento indefinido de memoria.
+* Flujo de desarrollo con Vite.
+
+## Inicio rápido
+
+Instalar dependencias:
 
 ```bash
 npm install
+```
+
+Correr la aplicación localmente:
+
+```bash
 npm run dev
 ```
 
-Open the URL shown in the terminal (usually `http://localhost:5173`).
-
-## Run locally with collaborative mode
-
-```bash
-npm install
-npm run dev:all
-```
-
-Open:
+Abrir la URL que aparece en la terminal. Normalmente es:
 
 ```text
 http://localhost:5173
 ```
 
-Turn on:
+## Usar el modo colaborativo
+
+Para correr la aplicación web y el servidor de Socket.IO al mismo tiempo:
+
+```bash
+npm run dev:all
+```
+
+Luego abrir:
+
+```text
+http://localhost:5173
+```
+
+Dentro de la aplicación, activar:
 
 ```text
 Modo colaborativo
 ```
 
-To test collaboration, open two browser windows with the same URL, activate collaborative mode in both, and select the same statue.
+Para probar la colaboración localmente:
 
-## How to use
+1. Abrir dos ventanas del navegador con la misma URL.
+2. Activar el modo colaborativo en ambas.
+3. Seleccionar la misma estatua.
+4. Pintar en una ventana y verificar que la otra reciba los decals.
 
-- **Move your cursor** over the page to rotate the bust.
-- **Click and drag** on the face to stretch it elastically — it springs back when released.
-- Use the **song selector** to pick a patriotic song.
-- Press **play** to start singing — the bust's mouth moves with the audio amplitude.
-- Adjust **volume** with the slider.
-- Click the **progress bar** to seek.
+## Servidor
 
-## Project structure
+El servidor colaborativo está en:
 
+```text
+server/index.js
 ```
-artigas-canta/
+
+Por defecto escucha en:
+
+```text
+http://127.0.0.1:3001
+```
+
+Se puede cambiar el host y el puerto usando variables de entorno:
+
+```bash
+SOCKET_HOST=0.0.0.0 SOCKET_PORT=3001 npm run server
+```
+
+El servidor guarda el estado de cada sala en memoria, agrupado por ID de estatua. Actualmente almacena hasta 2000 decals por estatua.
+
+## Configuración del cliente Socket.IO
+
+El módulo de colaboración del cliente está en:
+
+```text
+src/network/collaboration.js
+```
+
+Por defecto, el cliente se conecta a:
+
+```text
+http://localhost:3001
+```
+
+Se puede cambiar creando un archivo `.env`:
+
+```bash
+VITE_SOCKET_URL=http://localhost:3001
+```
+
+Para probar en red local, usar la IP de la máquina host:
+
+```bash
+VITE_SOCKET_URL=http://192.168.x.x:3001
+```
+
+Luego correr:
+
+```bash
+npm run dev:all
+```
+
+## Scripts disponibles
+
+```bash
+npm run dev
+```
+
+Corre el servidor de desarrollo de Vite.
+
+```bash
+npm run server
+```
+
+Corre el servidor colaborativo de Socket.IO.
+
+```bash
+npm run dev:all
+```
+
+Corre al mismo tiempo el servidor de Socket.IO y la aplicación Vite.
+
+```bash
+npm run build
+```
+
+Genera la versión de producción.
+
+```bash
+npm run preview
+```
+
+Previsualiza localmente la versión de producción.
+
+## Estructura del proyecto
+
+```text
+PatriaPaint/
 ├── index.html
 ├── package.json
 ├── README.md
 ├── public/
-│   ├── audio/          # Copied from Cancionero/
-│   │   ├── mi-bandera.mp3
-│   │   └── a-don-jose.mp3
-│   ├── lipsync/        # Future phoneme/viseme JSON files
 │   └── models/
-│       └── artigas_bust.glb   # Real 3D bust (8.4 MB)
+├── server/
+│   └── index.js
 └── src/
-    ├── main.js                 # Entry point (Babylon.js)
-    ├── styles.css              # Dark UI styles
+    ├── main.js
+    ├── styles.css
+    ├── network/
+    │   └── collaboration.js
     ├── scene/
-    │   ├── createScene.js      # Babylon.js scene, camera, lighting
-    │   ├── loadBust.js         # GLB loader + inspection + placeholder
-    │   ├── interaction.js      # Cursor-based rotation
-    │   ├── elasticDeform.js    # Elastic face drag
-    │   ├── audio.js            # Web Audio API playback
-    │   └── lipsync.js          # Amplitude lipsync (morph → mesh → procedural)
     └── ui/
-        └── controls.js         # Song selector, play/pause, volume, progress
 ```
 
-## 3D Model
+## Tecnologías
 
-The real 3D bust model is at:
+* Vite
+* Babylon.js
+* Socket.IO
+* JavaScript
+* HTML/CSS
 
-```
-public/models/artigas_bust.glb
-```
+## Notas
 
-Copied from `3D/Meshy_AI_The_Resolute_General_0603014007_generate.glb` (8.4 MB).
+El estado colaborativo se guarda actualmente en memoria dentro del servidor Node. Esto significa que los graffitis compartidos se reinician cuando se reinicia el servidor.
 
-**Model details:**
-- Single mesh (`mesh_node`) with 245,975 vertices
-- No morph targets — lipsync uses a procedural mouth
-- Material adjusted to matte stone/plaster look
-- Mouth position auto-detected from geometry
-
-If the file is missing, the app creates a procedural placeholder bust with head, neck, shoulders, nose, eyes, mouth, hair, and military collar.
-
-## Audio files
-
-Audio files were copied from the local `Cancionero/` folder:
-
-| File | Label |
-|------|-------|
-| `mi-bandera.mp3` | Mi Bandera |
-| `a-don-jose.mp3` | A Don José |
-
-Only existing files are included in the selector. No audio is fetched from the internet.
-
-## How lipsync works
-
-The lipsync system uses a **priority-based approach** (morph targets → mouth mesh → procedural mouth):
-
-### 1. Morph target lipsync
-If the GLB has morph targets named `mouthOpen`, `jawOpen`, `MouthOpen`, `viseme_A`, `viseme_O`, `viseme_M`, `viseme_aa`, or `open`, those are driven directly by the audio amplitude.
-
-### 2. Mouth / jaw mesh lipsync
-If a separate mesh is named `mouth`, `jaw`, `boca`, `mandibula`, `lips`, or `labio`, its vertical scale is animated.
-
-### 3. Procedural mouth fallback (used by this model)
-A dark oval disc (CircleGeometry) is attached to the front lower face and scaled vertically based on audio amplitude. The position and scale are tunable via constants:
-
-```js
-PROCEDURAL_MOUTH_OFFSET = { x: 0, y: 0.15, z: -0.55 }
-PROCEDURAL_MOUTH_SCALE = { x: 0.22, y: 0.035, z: 1 }
-```
-
-**Audio analysis:** Web Audio API `AnalyserNode` reads time-domain data each frame, calculates RMS amplitude, smooths it, and maps it to a mouth-open value (0–0.8). The mouth closes smoothly when paused.
-
-## GLB inspection
-
-On load, the app logs detailed model info to the console:
-- Mesh names and vertex counts
-- Morph target names (if any)
-- Mouth/jaw mesh detection
-- Bounding box dimensions
-- Mouth position auto-detection
-
-## Adding phoneme/viseme JSON support
-
-The lipsync module has hooks for future phoneme-driven animation:
-
-1. Place a JSON file at `public/lipsync/<song-id>.json` with:
-```json
-[
-  { "time": 0.12, "viseme": "A", "value": 0.8 },
-  { "time": 0.25, "viseme": "O", "value": 0.5 }
-]
-```
-
-2. Call `lipsyncSystem.loadVisemeData(data)` with the parsed JSON.
-3. Call `lipsyncSystem.getVisemeFrame(time)` each frame.
-
-## Tech stack
-
-- [Vite](https://vitejs.dev/) — fast dev server and bundler
-- [Babylon.js](https://www.babylonjs.com/) — 3D rendering engine
-- Web Audio API — audio analysis and playback
-- GLTF/GLB format — 3D model
-
-## License
-
-For educational and personal use only. Audio files are from publicly available sources and remain under their original licenses.
+Para desplegar el proyecto, el frontend de Vite y el backend de Socket.IO deben alojarse de una forma que permita conexiones websocket.
