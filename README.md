@@ -176,6 +176,18 @@ PatriaPaint/
 * JavaScript
 * HTML/CSS
 
+## Demo pública
+
+La versión web estática puede publicarse con GitHub Pages en:
+
+```text
+https://octx-xtco.github.io/PatriaPaint/
+```
+
+Esta demo sirve para abrir la aplicación como frontend estático.
+
+El modo colaborativo con Socket.IO requiere un servidor Node aparte, por lo que no funciona únicamente con GitHub Pages.
+
 ## Notas
 
 El estado colaborativo se guarda actualmente en memoria dentro del servidor Node. Esto significa que los graffitis compartidos se reinician cuando se reinicia el servidor.
