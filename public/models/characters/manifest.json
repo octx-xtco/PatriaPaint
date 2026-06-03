@@ -1,0 +1,17 @@
+[
+  {
+    "id": "artigas-low",
+    "name": "Artigas Low",
+    "file": "/models/characters/artigas-low.glb"
+  },
+  {
+    "id": "rivera-low",
+    "name": "Rivera Low",
+    "file": "/models/characters/rivera-low.glb"
+  },
+  {
+    "id": "batlle-y-ordonez-low",
+    "name": "Batlle y Ordóñez Low",
+    "file": "/models/characters/batlle-y-ordonez-low.glb"
+  }
+]

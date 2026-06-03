@@ -1,0 +1,22 @@
+[
+  {
+    "id": "marcha-mi-bandera",
+    "name": "Marcha Mi Bandera",
+    "file": "/audio/marcha-mi-bandera.mp3"
+  },
+  {
+    "id": "a-don-jose-video",
+    "name": "A Don José",
+    "file": "/audio/a-don-jose-video.mp3"
+  },
+  {
+    "id": "c418-minecraft-minecraft-volume-alpha",
+    "name": "C418 - Minecraft - Minecraft Volume Alpha",
+    "file": "/audio/c418-minecraft-minecraft-volume-alpha.mp3"
+  },
+  {
+    "id": "himno-nacional-uruguayo",
+    "name": "Himno Nacional Uruguayo",
+    "file": "/audio/himno-nacional-uruguayo.mp3"
+  }
+]

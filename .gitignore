@@ -1,0 +1,44 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Local environment
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# macOS / editor metadata
+.DS_Store
+**/.DS_Store
+.vscode/
+.idea/
+
+# Local source/reference assets not needed by the web app
+3D/
+Cancionero /
+img_ref/
+sfx/
+screenshots/
+
+# Old generated/public model copies not referenced by the current manifests
+public/models/artigas_bust.glb
+public/models/resolute_general.glb
+public/models/optimized/
+public/models/characters/artigas.glb
+public/models/characters/rivera.glb
+public/models/characters/batlle-y-ordonez.glb
+public/models/characters/personaje-02.glb
+public/models/characters/personaje-03.glb
+
+# Old public audio copies not referenced by the current audio manifest
+public/audio/a-don-jose.mp3
+public/audio/mi-bandera.mp3
