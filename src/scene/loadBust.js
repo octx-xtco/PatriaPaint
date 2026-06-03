@@ -1,7 +1,7 @@
 import * as BABYLON from '@babylonjs/core';
 import '@babylonjs/loaders';
 
-const BUST_PATH = '/models/characters/artigas-low.glb';
+const BUST_PATH = `${import.meta.env.BASE_URL}models/characters/artigas-low.glb`;
 const NORMALIZE_STATUE_MATERIALS = true;
 const BRONZE_TINT = new BABYLON.Color3(0.42, 0.28, 0.16);
 const WARM_HIGHLIGHT = new BABYLON.Color3(0.95, 0.78, 0.48);

@@ -17,14 +17,23 @@ import { createCollaborationSystem } from './network/collaboration.js';
 import { createControls } from './ui/controls.js';
 import './styles.css';
 
-const CHARACTER_MANIFEST_PATH = '/models/characters/manifest.json';
-const AUDIO_MANIFEST_PATH = '/audio/manifest.json';
+/**
+ * Resolve a public/ asset path for the configured Vite base URL.
+ * Works both locally and when deployed under a subdirectory like /PatriaPaint/.
+ */
+function publicAsset(path) {
+  const cleanPath = path.startsWith('/') ? path.slice(1) : path;
+  return `${import.meta.env.BASE_URL}${cleanPath}`;
+}
+
+const CHARACTER_MANIFEST_PATH = publicAsset('/models/characters/manifest.json');
+const AUDIO_MANIFEST_PATH = publicAsset('/audio/manifest.json');
 const ENABLE_LIPSYNC = false;
 const FALLBACK_CHARACTERS = [
-  { id: 'artigas-low', name: 'Artigas Low', file: '/models/characters/artigas-low.glb' },
+  { id: 'artigas-low', name: 'Artigas Low', file: publicAsset('/models/characters/artigas-low.glb') },
 ];
 const FALLBACK_TRACKS = [
-  { id: 'marcha-mi-bandera', name: 'Marcha Mi Bandera', file: '/audio/marcha-mi-bandera.mp3' },
+  { id: 'marcha-mi-bandera', name: 'Marcha Mi Bandera', file: publicAsset('/audio/marcha-mi-bandera.mp3') },
 ];
 
 /**
@@ -220,7 +229,8 @@ async function loadCharacterManifest() {
       throw new Error('Character manifest is empty');
     }
     const usableCharacters = characters.filter(character => character?.id && character?.name && character?.file);
-    return usableCharacters.length > 0 ? usableCharacters : FALLBACK_CHARACTERS;
+    return (usableCharacters.length > 0 ? usableCharacters : FALLBACK_CHARACTERS)
+      .map(character => ({ ...character, file: publicAsset(character.file) }));
   } catch (err) {
     console.warn('[Artigas] Could not load character manifest; using fallback.', err.message || err);
     return FALLBACK_CHARACTERS;
@@ -238,7 +248,8 @@ async function loadAudioManifest() {
       throw new Error('Audio manifest is empty');
     }
     const usableTracks = tracks.filter(track => track?.id && track?.name && track?.file);
-    return usableTracks.length > 0 ? usableTracks : FALLBACK_TRACKS;
+    return (usableTracks.length > 0 ? usableTracks : FALLBACK_TRACKS)
+      .map(track => ({ ...track, file: publicAsset(track.file) }));
   } catch (err) {
     console.warn('[Artigas] Could not load audio manifest; using fallback.', err.message || err);
     return FALLBACK_TRACKS;
