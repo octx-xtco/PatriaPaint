@@ -13,5 +13,10 @@
     "id": "batlle-y-ordonez-low",
     "name": "Batlle y Ordóñez Low",
     "file": "/models/characters/batlle-y-ordonez-low.glb"
+  },
+  {
+    "id": "sapo-ruperto-low",
+    "name": "Sapo Ruperto Low",
+    "file": "/models/characters/sapo-ruperto-low.glb"
   }
 ]
