@@ -28,6 +28,7 @@ Cancionero /
 img_ref/
 sfx/
 screenshots/
+md/
 
 # Old generated/public model copies not referenced by the current manifests
 public/models/artigas_bust.glb
